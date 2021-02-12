@@ -1,5 +1,6 @@
 package app.service;
 
+import app.algorithm.ReversePolishNotation;
 import app.domain.CalcResponse;
 import org.springframework.stereotype.Service;
 import javax.script.ScriptEngine;
@@ -12,16 +13,8 @@ import java.util.List;
 public class CalcService {
 
     public List<CalcResponse> calculate(String statement) {
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        ScriptEngine engine = scriptEngineManager.getEngineByName("JavaScript");
         List<CalcResponse> list = new ArrayList<>();
-        try {
-            list.add(new CalcResponse(engine.eval(statement).toString()));
-            return list;
-        } catch (ScriptException e) {
-            e.printStackTrace();
-        }
-        list.add(new CalcResponse("Error"));
+        list.add(new CalcResponse(ReversePolishNotation.eval(statement)));
         return list;
     }
 }
