@@ -1,8 +1,8 @@
-package app.algorithm;
+package app.utils;
 
 import java.util.LinkedList;
 
-public class ReversePolishNotation {
+public final class ReversePolishNotation {
 
     static boolean isDelim(char c) { // тру если пробел
         return c == ' ';
@@ -26,9 +26,9 @@ public class ReversePolishNotation {
         }
     }
 
-    static void processOperator(LinkedList<Integer> st, char op) {
-        int r = st.removeLast(); // выдёргиваем из упорядоченного листа последний элемент
-        int l = st.removeLast(); // также
+    static void processOperator(LinkedList<Long> st, char op) {
+        Long r = st.removeLast(); // выдёргиваем из упорядоченного листа последний элемент
+        Long l = st.removeLast(); // также
         switch (op) { // выполняем действие между l и r в зависимости от оператора в кейсе и результат валим в st
             case '+':
                 st.add(l + r);
@@ -48,8 +48,8 @@ public class ReversePolishNotation {
         }
     }
 
-    public static int eval(String s) {
-        LinkedList<Integer> st = new LinkedList<Integer>(); // сюда наваливают цифры
+    public static Long eval(String s) {
+        LinkedList<Long> st = new LinkedList<Long>(); // сюда наваливают цифры
         LinkedList<Character> op = new LinkedList<Character>(); // сюда опрераторы и st и op в порядке поступления
         for (int i = 0; i < s.length(); i++) { // парсим строку с выражением и вычисляем
             char c = s.charAt(i);
@@ -70,11 +70,11 @@ public class ReversePolishNotation {
                 while (i < s.length() && Character.isDigit(s.charAt(i)))
                     operand += s.charAt(i++);
                 --i;
-                st.add(Integer.parseInt(operand));
+                st.add(Long.parseLong(operand));
             }
         }
         while (!op.isEmpty())
             processOperator(st, op.removeLast());
-        return st.get(0);  // возврат результата
+        return st.get(0);
     }
 }

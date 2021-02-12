@@ -2,17 +2,17 @@ package app.domain;
 
 public class CalcResponse {
 
-    private int result;
+    private Long result;
 
-    public CalcResponse(int result) {
+    public CalcResponse(Long result) {
         this.result = result;
     }
 
-    public int getResult() {
+    public Long getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(Long result) {
         this.result = result;
     }
 }
