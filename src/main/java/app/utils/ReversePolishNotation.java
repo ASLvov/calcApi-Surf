@@ -26,9 +26,9 @@ public final class ReversePolishNotation {
         }
     }
 
-    static void processOperator(LinkedList<Long> st, char op) {
-        Long r = st.removeLast(); // выдёргиваем из упорядоченного листа последний элемент
-        Long l = st.removeLast(); // также
+    static void processOperator(LinkedList<Double> st, char op) {
+        Double r = st.removeLast(); // выдёргиваем из упорядоченного листа последний элемент
+        Double l = st.removeLast(); // также
         switch (op) { // выполняем действие между l и r в зависимости от оператора в кейсе и результат валим в st
             case '+':
                 st.add(l + r);
@@ -48,8 +48,8 @@ public final class ReversePolishNotation {
         }
     }
 
-    public static Long eval(String s) {
-        LinkedList<Long> st = new LinkedList<Long>(); // сюда наваливают цифры
+    public static Double eval(String s) {
+        LinkedList<Double> st = new LinkedList<Double>(); // сюда наваливают цифры
         LinkedList<Character> op = new LinkedList<Character>(); // сюда опрераторы и st и op в порядке поступления
         for (int i = 0; i < s.length(); i++) { // парсим строку с выражением и вычисляем
             char c = s.charAt(i);
@@ -70,7 +70,7 @@ public final class ReversePolishNotation {
                 while (i < s.length() && Character.isDigit(s.charAt(i)))
                     operand += s.charAt(i++);
                 --i;
-                st.add(Long.parseLong(operand));
+                st.add(Double.parseDouble(operand));
             }
         }
         while (!op.isEmpty())
