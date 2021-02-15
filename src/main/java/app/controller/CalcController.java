@@ -6,16 +6,12 @@ import app.domain.User;
 import app.domain.UserRequest;
 import app.repository.UserRepository;
 import app.repository.UserRequestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import app.service.CalcService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/calc")
@@ -34,7 +30,7 @@ public class CalcController {
     }
 
     @PostMapping
-    public ResponseEntity<CalcResponse> calculate(@RequestBody CalcRequest request) throws Exception {
+    public ResponseEntity<CalcResponse> calculate(@RequestBody CalcRequest request) {
         CalcResponse calcResponse = calcService.calculate(request);
         User user = new User();
         user.setUserName("Al");

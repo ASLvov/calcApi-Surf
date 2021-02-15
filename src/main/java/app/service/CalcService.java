@@ -12,7 +12,7 @@ import java.util.List;
 public class CalcService {
 
     public CalcResponse calculate(CalcRequest request) {
-        CalcResponse calcResponse = new CalcResponse(ReversePolishNotation.eval(request.getStatement()));
+        CalcResponse calcResponse = new CalcResponse(ReversePolishNotation.eval(request.getStatement()).toString());
         return calcResponse;
     }
 }

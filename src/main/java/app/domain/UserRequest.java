@@ -14,7 +14,7 @@ public class UserRequest {
 
     private String statement;
 
-    private Long result;
+    private String result;
 
     private LocalDateTime date;
 
@@ -40,11 +40,11 @@ public class UserRequest {
         this.statement = statement;
     }
 
-    public Long getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(Long result) {
+    public void setResult(String result) {
         this.result = result;
     }
 
