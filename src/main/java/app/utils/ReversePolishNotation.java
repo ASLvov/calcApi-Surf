@@ -9,7 +9,7 @@ public final class ReversePolishNotation {
     }
 
     static boolean isOperator(char c) { // возвращяем тру если один из символов ниже
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
+        return c == '+' || c == '-' || c == '*' || c == '^' || c == '/' || c == '%';
     }
 
     static int priority(char op) {
@@ -18,6 +18,7 @@ public final class ReversePolishNotation {
             case '-':
                 return 1;
             case '*':
+            case '^':
             case '/':
             case '%':
                 return 2;
@@ -38,6 +39,9 @@ public final class ReversePolishNotation {
                 break;
             case '*':
                 st.add(l * r);
+                break;
+            case '^':
+                st.add(Math.pow(l,r));
                 break;
             case '/':
                 st.add(l / r);
