@@ -2,7 +2,8 @@ package app.controller;
 
 import app.domain.CalcRequest;
 import app.domain.CalcResponse;
-import app.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import app.domain.UserRequest;
 import app.repository.UserRepository;
 import app.repository.UserRequestRepository;
@@ -17,31 +18,24 @@ import java.time.LocalDateTime;
 @RequestMapping(path = "/calc")
 public class CalcController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CalcController.class);
+
     private CalcService calcService;
 
-    private UserRepository userRepository;
 
-    private UserRequestRepository userRequestRepository;
-
-    public CalcController(CalcService calcService, UserRepository userRepository, UserRequestRepository userRequestRepository) {
+    public CalcController(CalcService calcService) {
         this.calcService = calcService;
-        this.userRepository = userRepository;
-        this.userRequestRepository = userRequestRepository;
     }
 
     @PostMapping
     public ResponseEntity<CalcResponse> calculate(@RequestBody CalcRequest request) {
-        CalcResponse calcResponse = calcService.calculate(request);
-        User user = new User();
-        user.setUserName("Al");
-        user.setPassword("123");
-        userRepository.save(user);
-        UserRequest userRequest = new UserRequest();
-        userRequest.setStatement(request.getStatement());
-        userRequest.setResult(calcResponse.getResult());
-        userRequest.setDate(LocalDateTime.now());
-        userRequest.setUserId(user.getId());
-        userRequestRepository.save(userRequest);
-        return new ResponseEntity<>(calcResponse, HttpStatus.OK);
+        try {
+            CalcResponse calcResponse = calcService.calculate(request);
+            LOGGER.info("Got request with statement '{}', the result is '{}'", request.getStatement(), calcResponse.getResult());
+            return new ResponseEntity<>(calcResponse, HttpStatus.OK);
+        } catch (NumberFormatException exception) {
+            LOGGER.info("Incorrect statement entered!");
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

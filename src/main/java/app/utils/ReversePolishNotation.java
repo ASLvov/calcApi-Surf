@@ -1,6 +1,8 @@
 package app.utils;
 
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class ReversePolishNotation {
 
@@ -52,7 +54,18 @@ public final class ReversePolishNotation {
         }
     }
 
+    static String changeSin(String s) {
+        Matcher matcher = Pattern.compile("sin\\(.+\\)").matcher(s);
+        while (matcher.find()) {
+            String st = s.substring(matcher.start(), matcher.end());
+            Double sin = Math.sin(Double.parseDouble(s.substring(matcher.start()+4 , matcher.end()-1)));
+            s = s.replace(st, sin.toString());
+        }
+        return s;
+    }
+
     public static Double eval(String s) {
+        s = changeSin(s);
         LinkedList<Double> st = new LinkedList<Double>(); // сюда наваливают цифры
         LinkedList<Character> op = new LinkedList<Character>(); // сюда опрераторы и st и op в порядке поступления
         for (int i = 0; i < s.length(); i++) { // парсим строку с выражением и вычисляем
@@ -71,7 +84,7 @@ public final class ReversePolishNotation {
                 op.add(c);
             } else {
                 String operand = "";
-                while (i < s.length() && Character.isDigit(s.charAt(i)))
+                while (i < s.length() && (Character.isDigit(s.charAt(i)) || s.charAt(i) == '.'))
                     operand += s.charAt(i++);
                 --i;
                 st.add(Double.parseDouble(operand));
