@@ -1,4 +1,4 @@
-package app.domain;
+package app.controller.dto;
 
 import lombok.Data;
 import lombok.NonNull;

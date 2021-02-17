@@ -3,7 +3,6 @@ package app.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "usr")
