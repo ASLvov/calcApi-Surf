@@ -1,9 +1,5 @@
 package app.domain;
 
-import app.converter.LocalDateStringConverter;
-import app.converter.StringLocalDateConverter;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,8 +9,6 @@ public class SearchResponse {
 
     private Long id;
 
-    @JsonSerialize(converter = LocalDateStringConverter.class)
-    @JsonDeserialize(converter = StringLocalDateConverter.class)
     private LocalDateTime localDateTime;
 
     private String statement;

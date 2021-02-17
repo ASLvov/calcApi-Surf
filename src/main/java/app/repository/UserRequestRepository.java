@@ -12,8 +12,10 @@ import java.util.List;
 @Repository
 public interface UserRequestRepository extends JpaRepository<UserRequest, Long> {
 
-    @Query("SELECT req FROM UserRequest req WHERE req.userId = :userId AND " +
-            "req.statement LIKE :statement AND req.date>= :startDate AND req.date<= :endDate")
+    @Query("SELECT req FROM UserRequest req WHERE (req.userId = :userId OR :userId IS NULL) AND " +
+                                                 "(req.statement = :statement OR :statement IS NULL) AND " +
+                                                 "req.date>= :startDate  AND " +
+                                                 "req.date<= :endDate")
     List<UserRequest> findRequests(@Param("userId") Long userId,
                                    @Param("statement") String statement,
                                    @Param("startDate") LocalDateTime startDate,
