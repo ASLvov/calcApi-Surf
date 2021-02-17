@@ -17,6 +17,16 @@ public class SearchRequest {
     private String statement;
     private String userName;
 
+    public SearchRequest(LocalDateTime startDate, LocalDateTime endDate, String statement, String userName) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.statement = statement;
+        this.userName = userName;
+    }
+
+    public SearchRequest() {
+    }
+
     public LocalDateTime getStartDate() {
         return startDate;
     }

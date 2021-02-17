@@ -26,6 +26,9 @@ public class SearchResponse {
         this.userName = userName;
     }
 
+    public SearchResponse() {
+    }
+
     public Long getId() {
         return id;
     }
