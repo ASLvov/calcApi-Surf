@@ -1,18 +1,11 @@
 package app.domain;
 
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
 public class CalcResponse {
 
+    @NonNull
     private String result;
-
-    public CalcResponse(String result) {
-        this.result = result;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
 }

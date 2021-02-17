@@ -4,6 +4,9 @@ import app.domain.*;
 import app.repository.UserRepository;
 import app.repository.UserRequestRepository;
 import app.utils.ReversePolishNotation;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,16 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@AllArgsConstructor
 public class CalcService {
 
-    private UserRequestRepository userRequestRepository;
-    private UserRepository userRepository;
-
-    public CalcService(UserRequestRepository userRequestRepository,
-                       UserRepository userRepository) {
-        this.userRequestRepository = userRequestRepository;
-        this.userRepository = userRepository;
-    }
+    private final UserRequestRepository userRequestRepository;
+    private final UserRepository userRepository;
 
     public CalcResponse calculate(CalcRequest request) {
         CalcResponse calcResponse = new CalcResponse(ReversePolishNotation.eval(request.getStatement()).toString());
@@ -34,31 +33,8 @@ public class CalcService {
     }
 
     public List<SearchResponse> findRequests(SearchRequest request) {
-        Long userId;
-        String statement;
-        LocalDateTime startDate;
-        LocalDateTime endDate;
-        if (!request.getUserName().isEmpty()) {
-            userId = userRepository.getUser(request.getUserName()).getId();
-        } else {
-            userId = 0L;
-        }
-        if (!request.getStatement().isEmpty()) {
-            statement = request.getStatement();
-        } else {
-            statement = "'%'";
-        }
-        if (!request.getStartDate().toString().isEmpty()) {
-            startDate = request.getStartDate();
-        } else {
-            startDate = LocalDateTime.MIN;
-        }
-        if (!request.getEndDate().toString().isEmpty()) {
-            endDate = request.getStartDate();
-        } else {
-            endDate = LocalDateTime.MAX;
-        }
-        List<UserRequest> list = userRequestRepository.findRequests(userId, statement, startDate, endDate);
+        List<UserRequest> list = userRequestRepository.findRequests(userRepository.getUser(request.getUserName()).getId(),
+                request.getStatement(), request.getStartDate(), request.getEndDate());
         List<SearchResponse> responseList = list.stream().map(l -> getResponse(l)).collect(Collectors.toList());
         return responseList;
     }
