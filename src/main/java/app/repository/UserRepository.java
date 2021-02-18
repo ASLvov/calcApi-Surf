@@ -6,8 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    @Query("SELECT usr FROM User usr WHERE usr.userName = :userName")
-    UserEntity getUser(@Param("userName") String userName);
+    @Query("SELECT usr FROM UserEntity usr WHERE usr.userName = :userName")
+    UserEntity findByUserName(@Param("userName") String userName);
+
+    boolean existsByUserName(String userName);
 }
