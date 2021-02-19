@@ -20,10 +20,11 @@ public final class ReversePolishNotation {
             case '-':
                 return 1;
             case '*':
-            case '^':
             case '/':
             case '%':
                 return 2;
+            case '^':
+                return 3;
             default:
                 return -1;
         }
@@ -43,7 +44,7 @@ public final class ReversePolishNotation {
                 st.add(l * r);
                 break;
             case '^':
-                st.add(Math.pow(l,r));
+                st.add(Math.pow(l, r));
                 break;
             case '/':
                 st.add(l / r);
@@ -58,7 +59,7 @@ public final class ReversePolishNotation {
         Matcher matcher = Pattern.compile("sin\\(.+\\)").matcher(s);
         while (matcher.find()) {
             String st = s.substring(matcher.start(), matcher.end());
-            Double sin = Math.sin(Double.parseDouble(s.substring(matcher.start()+4 , matcher.end()-1)));
+            Double sin = Math.sin(Double.parseDouble(s.substring(matcher.start() + 4, matcher.end() - 1)));
             s = s.replace(st, sin.toString());
         }
         return s;
@@ -76,7 +77,7 @@ public final class ReversePolishNotation {
                 op.add('(');
             else if (c == ')') {
                 while (op.getLast() != '(')
-                    processOperator(st,op.removeLast());
+                    processOperator(st, op.removeLast());
                 op.removeLast();
             } else if (isOperator(c)) {
                 while (!op.isEmpty() && priority(op.getLast()) >= priority(c))

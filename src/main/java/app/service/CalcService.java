@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,16 +23,17 @@ import java.util.stream.Collectors;
 public class CalcService {
 
     private final UserRequestRepository userRequestRepository;
+    private final UserService userService;
     private final UserRepository userRepository;
 
-    public CalcResponse calculate(CalcRequest request) {
+    public CalcResponse calculate(CalcRequest request, String name) {
         CalcResponse calcResponse = new CalcResponse(ReversePolishNotation.eval(request.getStatement()).toString());
 
         UserRequests userRequests = new UserRequests();
         userRequests.setStatement(request.getStatement());
         userRequests.setResult(calcResponse.getResult());
         userRequests.setDate(LocalDateTime.now());
-        userRequests.setUserId(1L);
+        userRequests.setUserId(userService.findByLogin(name).get().getId());
 
         userRequestRepository.save(userRequests);
 
@@ -39,7 +41,17 @@ public class CalcService {
     }
 
     public List<SearchResponse> findRequests(SearchRequest request) {
-        Long id = userRepository.findByUserName(request.getUserName()).getId();
+        Long id;
+        if (request.getUserName() == null) {
+            id = null;
+        } else {
+            try {
+                id = userService.findByLogin(request.getUserName()).get().getId();
+            } catch (NoSuchElementException ex) {
+                log.info("Wrong username, shown results of other users");
+            }
+            id = null;
+        }
         List<UserRequests> list = userRequestRepository.findRequests(id,
                 request.getStatement(), request.getStartDate(), request.getEndDate());
         return list.stream().map(l -> getResponse(l)).collect(Collectors.toList());

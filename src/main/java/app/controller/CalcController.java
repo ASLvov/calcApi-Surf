@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,8 @@ public class CalcController {
     @PostMapping("/calc")
     public ResponseEntity<CalcResponse> calculate(@RequestBody CalcRequest request) {
         try {
-            CalcResponse calcResponse = calcService.calculate(request);
+            String name = SecurityContextHolder.getContext().getAuthentication().getName();
+            CalcResponse calcResponse = calcService.calculate(request, name);
             return ResponseEntity.ok(calcResponse);
         } catch (NumberFormatException exception) {
             exception.printStackTrace();

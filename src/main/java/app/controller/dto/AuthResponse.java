@@ -10,7 +10,4 @@ import java.util.List;
 public class AuthResponse {
     private String token;
     private List<String> roles;
-
-    public AuthResponse() {
-    }
 }
